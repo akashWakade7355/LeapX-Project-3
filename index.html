@@ -1,27 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>LeapX Project 3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Dashboard</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
-    <h1>LeapX Project 3</h1>
+    <div class="container">
 
-    <input type="text" id="cityInput" placeholder="Enter city name">
-    <button id="searchBtn">Search</button>
+        <!-- ================= NAVBAR ================= -->
 
-    <div id="weather-card">
-        <h2>Weather Information</h2>
+        <nav>
 
-        <p id="city">City: --</p>
-        <p id="temperature">Temperature: --°C</p>
-        <p id="humidity">Humidity: --%</p>
-        <p id="wind">Wind Speed: -- km/h</p>
-        <p id="condition">Condition: --</p>
+            <div class="logo">
+                Weather
+            </div>
+
+            <ul>
+
+                <li class="active">
+                    <a href="#">Weather</a>
+                </li>
+
+                <li>
+                    <a href="newsApp/html/index.html">
+                        News
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <!-- ================= SEARCH ================= -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="cityInput"
+                placeholder="Search for a city...">
+
+            <button id="searchBtn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+        </div>
+
+        <!-- ================= WEATHER CARD ================= -->
+
+        <div class="weather-card">
+
+            <div class="weather-top">
+
+                <div>
+
+                    <h1 id="city">
+                        Bengaluru
+                    </h1>
+
+                    <p id="date">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="weather-main">
+
+                <div class="weather-icon">
+
+                    <img
+                        id="weatherIcon"
+                        src="https://openweathermap.org/img/wn/01d@2x.png"
+                        alt="Weather Icon">
+
+                </div>
+
+                <div class="temperature-section">
+
+                    <h2 id="temperature">
+                        0°C
+                    </h2>
+
+                    <p id="condition">
+                        Clear Sky
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom Information -->
+
+            <div class="weather-info">
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <div>
+
+                        <span>Humidity</span>
+
+                        <h3 id="humidity">
+                            --
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-wind"></i>
+
+                    <div>
+
+                        <span>Wind</span>
+
+                        <h3 id="wind">
+                            --
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-gauge-high"></i>
+
+                    <div>
+
+                        <span>Pressure</span>
+
+                        <h3 id="pressure">
+                            --
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+                    <div>
+
+                        <span>Feels Like</span>
+
+                        <h3 id="feelsLike">
+                            --
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <script src="js/weather.js"></script>
 
 </body>
+
 </html>
