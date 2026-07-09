@@ -70,7 +70,7 @@ function updateWeather(data) {
     document.getElementById("weatherIcon").src =
         `https://openweathermap.org/img/wn/${icon}@4x.png`;
 
-    updateDateTime();
+    updateDateTime(data.timezone);
 
 }
 
@@ -78,28 +78,32 @@ function updateWeather(data) {
 // Date & Time
 // =========================
 
-function updateDateTime() {
+function updateDateTime(timezoneOffset) {
 
-    const now = new Date();
+    const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+
+    const cityTime = new Date(utc + (timezoneOffset * 1000));
 
     const options = {
 
         weekday: "long",
 
-        year: "numeric",
+        day: "numeric",
 
         month: "long",
 
-        day: "numeric",
+        year: "numeric",
 
-        hour: "numeric",
+        hour: "2-digit",
 
-        minute: "2-digit"
+        minute: "2-digit",
+
+        hour12: true
 
     };
 
     document.getElementById("date").textContent =
-        now.toLocaleString("en-US", options);
+        cityTime.toLocaleString("en-US", options);
 
 }
 
