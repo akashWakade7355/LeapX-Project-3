@@ -2,24 +2,34 @@ const API_KEY = "4f8861a9c091499d893491e53d5c1ea2";
 
 const newsContainer = document.getElementById("news-container");
 
+function getNewsUrl(query) {
+    const isLocal = window.location.hostname === "localhost" || 
+                    window.location.hostname === "127.0.0.1" || 
+                    window.location.protocol === "file:";
+    if (!isLocal) {
+        return `/api/news?q=${encodeURIComponent(query)}`;
+    } else {
+        return `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_KEY}`;
+    }
+}
+
 async function fetchNews(city, category) {
-
     const query = `${city} ${category}`;
+    const url = getNewsUrl(query);
 
-    const url =
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_KEY}`;
-
-    const response = await fetch(url);
-
-    const data = await response.json();
-    localStorage.setItem("newsArticles", JSON.stringify(data.articles));
-    let storedData = JSON.parse(localStorage.getItem("newsArticles"));
-    displayNews(storedData);
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        localStorage.setItem("newsArticles", JSON.stringify(data.articles || []));
+        let storedData = JSON.parse(localStorage.getItem("newsArticles"));
+        displayNews(storedData);
+    } catch (error) {
+        console.error("Error fetching news:", error);
+    }
 }
 
 // Search using input box
 async function searchNews() {
-  
     const searchInput = document.getElementById("input").value.trim();
 
     if (!searchInput) {
@@ -27,15 +37,18 @@ async function searchNews() {
         return;
     }
 
-    const url =
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(searchInput)}&apiKey=${API_KEY}`;
+    const url = getNewsUrl(searchInput);
 
-    const response = await fetch(url);
-
-    const data = await response.json();
-
-    console.log(data);
-    displayNews(data.articles);
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Save to cache for page reload behavior
+        localStorage.setItem("newsArticles", JSON.stringify(data.articles || []));
+        displayNews(data.articles);
+    } catch (error) {
+        console.error("Error searching news:", error);
+    }
 }
 
 
@@ -61,10 +74,10 @@ function displayNews(articles) {
        newsContainer.innerHTML += `
     <div class="col-md-4 mb-4">
 
-        <div class="card h-100 shadow-sm">
+        <div class="news-card h-100">
 
             <img
-                src="${article.urlToImage || 'https://via.placeholder.com/300'}"
+                src="${article.urlToImage || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'}"
                 class="card-img-top"
                 alt="News Image"
             >
@@ -79,12 +92,13 @@ function displayNews(articles) {
                     ${article.description || "No description available"}
                 </p>
 
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mt-auto">
 
                     <a
                         href="${article.url}"
                         target="_blank"
                         class="btn btn-primary"
+                        style="width: 45%; height: 42px;"
                     >
                         Read More
                     </a>
@@ -92,6 +106,7 @@ function displayNews(articles) {
                     <button
                         class="btn btn-outline-warning bookmark-btn"
                         data-index="${index}"
+                        style="width: 45%; height: 42px;"
                     >
                         ⭐ Bookmark
                     </button>
