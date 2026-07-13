@@ -5,45 +5,34 @@ const API_KEY = "aab108fe8f290daf0565265f0b126d81";
 // =========================
 
 async function getWeather(city) {
-
     try {
+        const url = window.location.protocol.startsWith('http') 
+            ? `/api/weather?city=${encodeURIComponent(city)}&mode=weather`
+            : `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
 
-        const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
-        );
+        const response = await fetch(url);
 
         if (!response.ok) {
             throw new Error("City not found");
         }
 
         const data = await response.json();
-
         updateWeather(data);
-
     }
-
     catch (error) {
-
         alert("City not found!");
-
         console.error(error);
-
     }
-
 }
 
 async function getForecast(city){
+    const url = window.location.protocol.startsWith('http') 
+        ? `/api/weather?city=${encodeURIComponent(city)}&mode=forecast`
+        : `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
 
-    const response = await fetch(
-
-`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
-
-    );
-
+    const response = await fetch(url);
     const data = await response.json();
-
     displayForecast(data);
-
 }
 
 function displayForecast(data){
@@ -209,39 +198,4 @@ document.getElementById("cityInput").addEventListener("keydown", (event) => {
 getWeather("Bengaluru");
 getForecast("Bengaluru");
 
-// =========================
-// DARK/LIGHT MODE
-// =========================
-
-const themeToggle = document.getElementById("themeToggle");
-
-// Load saved theme
-if(localStorage.getItem("theme") === "light"){
-
-    document.body.classList.add("light-mode");
-
-    themeToggle.textContent = "☀️";
-
-}
-
-themeToggle.addEventListener("click", ()=>{
-
-    document.body.classList.toggle("light-mode");
-
-    if(document.body.classList.contains("light-mode")){
-
-        themeToggle.textContent="☀️";
-
-        localStorage.setItem("theme","light");
-
-    }
-
-    else{
-
-        themeToggle.textContent="🌙";
-
-        localStorage.setItem("theme","dark");
-
-    }
-
-});
+// Note: Dark/Light Mode is now managed by the shared js/theme.js script.
